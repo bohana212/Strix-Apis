@@ -1,13 +1,13 @@
 {
-  "name": "Anomaki Apis",
+  "name": "Strix Apis",
   "version": "v1.0",
-  "description": "Rest Api Simple",
+  "description": "Rest Apis",
   "bannerImage": "https://files.catbox.moe/0a58nf.jpg",
   "header": {
     "status": "Online!"
   },
   "apiSettings": {
-    "creator": "Xyzan - Anomaki",
+    "creator": "Hann - Strix",
     "globalKey": ["yo"],
     "defaultRequireKey": true
   },
