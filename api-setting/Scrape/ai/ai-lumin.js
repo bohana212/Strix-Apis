@@ -1,40 +1,25 @@
-import axios from "axios";
-
+// File: api/ai/ai-lumin.js
 export default async function handler(req, res) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const text = req.method === "GET" ? req.query.text : req.body?.text;
-
-  console.log("Text:", text);
-  console.log("API key ada?", !!apiKey);
-
-  if (!apiKey) return res.status(500).json({ error: "API key belum diatur" });
-  if (!text) return res.status(400).json({ error: "Parameter text kosong" });
-
   try {
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        model: "gpt-3.5-turbo", // coba pakai ini dulu biar stabil
-        messages: [
-          {
-            role: "system",
-            content:
-              "Kamu adalah Nadyaa Sucilawati, gadis lembut, baik hati, sopan, dan berbicara penuh kasih sayang dalam Bahasa Indonesia.",
-          },
-          { role: "user", content: text },
-        ],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const text =
+      req.method === "POST"
+        ? req.body?.text
+        : req.query?.text;
 
-    return res.status(200).json({ reply: response.data.choices[0].message.content });
-  } catch (error) {
-    console.error("Error detail:", error.response?.data || error.message);
-    return res.status(500).json({ error: error.response?.data || error.message });
+    if (!text) {
+      return res.status(400).json({ error: "Parameter 'text' diperlukan." });
+    }
+
+    // Coba test dulu tanpa OpenAI (pastikan route aktif)
+    // Kalau ini muncul, artinya route udah OK
+    return res.status(200).json({
+      message: "Endpoint aktif ✅",
+      input: text,
+      hint: "Sekarang kamu bisa hubungkan ke OpenAI API di sini.",
+    });
+
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
