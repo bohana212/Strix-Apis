@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function nadyaaChat(teks) {
-  const apiKey = "ISI_APIKEY_KAMU_DISINI";
+  const apiKey = "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";
 
   const url = "https://api.openai.com/v1/chat/completions";
   const headers = {
