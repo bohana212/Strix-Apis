@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function nadyaaChat(teks) {
-  const apiKey = "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"; // ganti ini ya!
+  const apiKey = "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"; // ganti ini ya!
 
   try {
     const response = await axios.post(
