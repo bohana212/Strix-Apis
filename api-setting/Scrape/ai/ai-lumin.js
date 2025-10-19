@@ -1,16 +1,11 @@
 import axios from "axios";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Gunakan metode POST" });
-  }
-
-  const { text } = req.body;
   const apiKey = process.env.OPENAI_API_KEY;
+  const text = req.method === "GET" ? req.query.text : req.body.text;
 
-  if (!apiKey) {
-    return res.status(500).json({ error: "API key belum diatur di Vercel" });
-  }
+  if (!apiKey) return res.status(500).json({ error: "API key belum diatur" });
+  if (!text) return res.status(400).json({ error: "Parameter text wajib diisi" });
 
   try {
     const response = await axios.post(
@@ -28,19 +23,15 @@ export default async function handler(req, res) {
       },
       {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
-    res.status(200).json({
-      reply: response.data.choices[0].message.content,
-    });
-  } catch (error) {
-    console.error("Error:", error.response?.data || error.message);
-    res.status(500).json({
-      error: error.response?.data || error.message,
-    });
+    res.status(200).json({ reply: response.data.choices[0].message.content });
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ error: err.response?.data || err.message });
   }
 }
